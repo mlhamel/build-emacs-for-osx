@@ -67,6 +67,16 @@ def patches(opts = {})
     }
   end
 
+  if opts[:re_max_failures]
+    p << {
+      :replace => [
+        "src/regex.c",
+        "size_t re_max_failures = 40000",
+        "size_t re_max_failures = 400000"
+      ]
+    }
+  end
+
   p
 end
 
@@ -91,6 +101,10 @@ def parse_options
 
     opts.on('--srgb-244', "Use sRGB patch for 24.3 -> 24.4 dev builds. sRGB patch not needed in final 24.4.") do
       options[:srgb] = true
+    end
+
+    opts.on('--re-max-failures', "Increase the value of the re-max-failure to 400000.") do
+      options[:re_max_failures] = true
     end
   end.parse!
 
